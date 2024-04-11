@@ -72,12 +72,22 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Fire Stop");
     }
 
+    /// <summary>
+    /// Applies an impulse away from the mouse position
+    /// </summary>
+    /// <param name="power">The strength/power of the impulse applied</param>
+    /// <param name="duration">The duration for which the impulse should be applied for</param>
     public void ApplyImpulseAwayFromMousePos(float power, float duration = 0.1f)
     {
         Vector3 direction = GameplayStatics.GetDirectionFromMouseToLocation(transform.position);
         ApplyImpulse(new Vector2(direction.x, direction.y) * power, duration);
     }
 
+    /// <summary>
+    /// Applies an impulse in a given direction
+    /// </summary>
+    /// <param name="impulseVelocity">The velocity to be applied, not normalized, should have a high magnitude</param>
+    /// <param name="duration">The duration for which the impulse should be applied for</param>
     public void ApplyImpulse(Vector2 impulseVelocity, float duration = 0.1f)
     {
         _impulsing = true;
