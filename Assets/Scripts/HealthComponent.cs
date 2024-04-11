@@ -25,6 +25,12 @@ public class HealthComponent : MonoBehaviour
     {
         _health = maxHealth;
     }
+
+    public void ApplyMaxHealthMult(float mult)
+    {
+        maxHealth *= mult;
+        _health = maxHealth;
+    }
     
     /// <summary>
     /// Applies a delta to the health variable

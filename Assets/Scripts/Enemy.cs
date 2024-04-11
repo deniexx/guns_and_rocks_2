@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        _healthComponent.ApplyMaxHealthMult(UpgradesStatic.monsterHealthMult);
         playerTransform = GameManager.Instance.Player.transform;
         enemyTransform = transform;
     }
@@ -64,14 +65,9 @@ public class Enemy : MonoBehaviour
 
         _flashCoroutine = StartCoroutine(FlashColorForDuration(delta < 0 ? Color.red : Color.green, 0.5f));
 
-        int roll = Random.Range(1, (Mathf.CeilToInt(delta) + 1) / 5);
-        for (int i = 0; i < roll; ++i)
-        {
-            GameObject gemstoneGO = Instantiate(gemstone, transform.position, Quaternion.identity);
-            gemstoneGO.GetComponent<Gemstone>().SetValue(Random.Range(20, 60));
-            float force = Random.Range(5, 20);
-            gemstoneGO.GetComponent<Rigidbody2D>().AddForce(-getDireciton() * force);
-        }
+        GameObject gemstoneGO = Instantiate(gemstone, transform.position, Quaternion.identity);
+        gemstoneGO.GetComponent<Gemstone>().SetValue(Random.Range(20, 60));
+        gemstoneGO.GetComponent<Rigidbody2D>().AddForce(getDireciton() * 300);
 
         if (gameObject == null) return;
         if (health <= 0f) Destroy(gameObject);

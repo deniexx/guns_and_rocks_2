@@ -144,17 +144,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 4577362744288396442, guid: 35716342d7f7c624993b487f8930187a, type: 3}
-  fireRate: 2
+  fireRate: 1
+  name: Shotgun
   magazineAmmo: 2
   reloadDelay: 0.3
   currentAmmo: 16
   currentAmmoInMagazine: 2
-  damage: 50
-  projectileSpreadAngle: 45
-  numOfProjectiles: 5
+  damage: 200
+  projectileSpreadAngle: 90
+  numOfProjectiles: 8
   recoilImpulse: 50
   projectileLifeSpan: 1
-  pierceAmount: 0
+  pierceAmount: 10
   attachRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   onReloadDelayStarted:
     m_PersistentCalls:
