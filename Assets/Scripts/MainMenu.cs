@@ -7,12 +7,12 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("Sample Scene 1_Harry");
+        SceneManager.LoadScene(1);
     }
 
     public void ControlsButton()
     {
-        SceneManager.LoadScene("Controls Screen");
+        SceneManager.LoadScene(2);
     }
 
     public void QuitGame()
