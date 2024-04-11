@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aba91cd8da615049ad9000c87925108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
+  speed: 1.8
 --- !u!58 &599087297752609541
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -176,6 +176,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 250
+  invincibilityDuration: 0.1
+  applyInvincibility: 0
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
