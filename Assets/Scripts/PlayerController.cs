@@ -33,7 +33,8 @@ public class PlayerController : MonoBehaviour
         _moveAction = _playerInput.actions["Move"];
 
         _fireAction = _playerInput.actions["Fire"];
-        _fireAction.started += Fire;
+        _fireAction.started += FireStarted;
+        _fireAction.canceled += FireStopped;
         
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
@@ -61,9 +62,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Fire(InputAction.CallbackContext callbackContext)
+    private void FireStarted(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("Fire");
+        Debug.Log("Fire Start");
+    }
+
+    private void FireStopped(InputAction.CallbackContext callbackContext)
+    {
+        Debug.Log("Fire Stop");
     }
 
     public void ApplyImpulseAwayFromMousePos(float power, float duration = 0.1f)

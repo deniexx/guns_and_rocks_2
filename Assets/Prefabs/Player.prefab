@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 782391107348582328}
   - component: {fileID: 8900869026798516458}
   - component: {fileID: 4644057548293641221}
+  - component: {fileID: 8132564574035827294}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -215,3 +216,19 @@ MonoBehaviour:
   accelerationForce: 5
   maxSpeed: 10
   friction: 0.15
+--- !u!114 &8132564574035827294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5978952429530908015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f902782cd5fffe54f9616841c4c4c190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
