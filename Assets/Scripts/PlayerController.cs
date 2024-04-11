@@ -61,9 +61,7 @@ public class PlayerController : MonoBehaviour
         // Clamp Speed, only if we are not being impulsed by something
         if (!_impulsing)
         {
-            float clampedX = Mathf.Clamp(newVelocity.x, -maxSpeed, maxSpeed);
-            float clampedY = Mathf.Clamp(newVelocity.y, -maxSpeed, maxSpeed);
-            newVelocity = new Vector2(clampedX, clampedY);
+            newVelocity = Vector2.ClampMagnitude(newVelocity, maxSpeed);
             _rigidbody2D.velocity = newVelocity;
         }
     }
