@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5486915557292135489}
   - component: {fileID: -729008218236858017}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: Laser Drill
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8962264, g: 0.004227493, b: 0.08954864, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -143,18 +143,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643eb6ed0fe9d9a44bfccee8729400b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 4577362744288396442, guid: 35716342d7f7c624993b487f8930187a, type: 3}
-  fireRate: 1
-  magazineAmmo: 12
+  bulletPrefab: {fileID: 4577362744288396442, guid: 94bb85a88257e9641b4ccdb47323ed84, type: 3}
+  fireRate: 100
+  magazineAmmo: 1500
   reloadDelay: 0.3
-  currentAmmo: 36
-  currentAmmoInMagazine: 6
-  damage: 20
+  currentAmmo: 1500
+  currentAmmoInMagazine: 1500
+  damage: 10
   projectileSpreadAngle: 0
   numOfProjectiles: 1
-  recoilImpulse: 0
-  projectileLifeSpan: 1
-  pierceAmount: 0
+  recoilImpulse: 1
+  projectileLifeSpan: 0.2
+  pierceAmount: 3
   attachRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   onReloadDelayStarted:
     m_PersistentCalls:
