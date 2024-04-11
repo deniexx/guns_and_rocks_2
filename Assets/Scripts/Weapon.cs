@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
-    public Sprite currentWeaponSpr;
     public GameObject bulletPrefab;
 
     public float fireRate = 1;
@@ -20,6 +19,8 @@ public class Weapon : MonoBehaviour
     public float projectileLifeSpan = 1f;
     public int pierceAmount = 0;
 
+    public Quaternion attachRotation;
+
     private PlayerController _playerController;
 
     private bool bIsFiring = false;
@@ -29,6 +30,7 @@ public class Weapon : MonoBehaviour
     private Coroutine _reloadCoroutine;
 
     public UnityEvent<float> onReloadDelayStarted;
+    public UnityEvent<int, int> onAmmoUpdated;
 
     public void Equipped(PlayerController playerController)
     {
@@ -46,17 +48,18 @@ public class Weapon : MonoBehaviour
         {
             if (Time.time >= nextTimeOfFire)
             {
-                Vector3 bulletDir = -GameplayStatics.GetDirectionFromMouseToLocation(transform.position);
-                Vector3 leftOfSpread = GameplayStatics.RotateVector(bulletDir, -projectileSpreadAngle / 2f);
-
-                float deltaSpread = projectileSpreadAngle / (float)(numOfProjectiles + 1);
-                for (int i = 0; i < numOfProjectiles; i++)
+                if (currentAmmoInMagazine > 0)
                 {
-                    Vector3 dirActual = GameplayStatics.RotateVector(leftOfSpread, deltaSpread * i);
+                    Vector3 bulletDir = -GameplayStatics.GetDirectionFromMouseToLocation(transform.position);
+                    Vector3 leftOfSpread = GameplayStatics.RotateVector(bulletDir, -projectileSpreadAngle / 2f);
 
-                    //Debug.DrawLine(transform.position, transform.position + dirActual * 20, Color.black, 5f);
-                    if (currentAmmoInMagazine > 0)
+                    float deltaSpread = projectileSpreadAngle / (float)(numOfProjectiles + 1);
+                    for (int i = 0; i < numOfProjectiles; i++)
                     {
+                        Vector3 dirActual = GameplayStatics.RotateVector(leftOfSpread, deltaSpread * i);
+
+                        //Debug.DrawLine(transform.position, transform.position + dirActual * 20, Color.black, 5f);
+
                         GameObject bulletGO = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
                         Bullet bullet = bulletGO.GetComponent<Bullet>();
                         bullet.damage = damage;
@@ -64,11 +67,15 @@ public class Weapon : MonoBehaviour
                         bullet.pierceAmount = pierceAmount;
                         Destroy(bulletGO, projectileLifeSpan);
                         nextTimeOfFire = Time.time + 1 / fireRate;
-                        _playerController.ApplyImpulseAwayFromMousePos(recoilImpulse);
+                        if (recoilImpulse > 1)
+                        {
+                            _playerController.ApplyImpulseAwayFromMousePos(recoilImpulse);
+                        }
                     }
-
+                    
+                    currentAmmoInMagazine--;
+                    onAmmoUpdated?.Invoke(currentAmmoInMagazine, currentAmmo);
                 }
-                currentAmmoInMagazine--;
             }
         }
     }
@@ -96,6 +103,9 @@ public class Weapon : MonoBehaviour
             currentAmmoInMagazine = currentAmmo;
             currentAmmo = 0;
         }
+        
+        onAmmoUpdated?.Invoke(currentAmmoInMagazine, currentAmmo);
+        _reloadCoroutine = null;
     }
 
     public void EndFiring()

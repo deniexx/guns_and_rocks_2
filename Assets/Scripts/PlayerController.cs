@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,8 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField]
     private Transform weaponAttachPoint;
+
+    public UnityEvent<Weapon> onWeaponChanged;
     
     /*****************************************/
     /**************** HEALTH ****************/
@@ -170,7 +173,9 @@ public class PlayerController : MonoBehaviour
         Destroy(boxCollider2D);
         weapon.transform.parent = weaponAttachPoint;
         weapon.transform.localPosition = new Vector3(0f, 0f);
+        weapon.transform.localRotation = weaponComp.attachRotation;
         weaponComp.Equipped(this);
+        onWeaponChanged?.Invoke(weaponComp);
         _currentWeapon = weaponComp;
     }
 

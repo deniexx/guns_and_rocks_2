@@ -147,9 +147,16 @@ MonoBehaviour:
   bulletPrefab: {fileID: 4577362744288396442, guid: 35716342d7f7c624993b487f8930187a, type: 3}
   fireRate: 1
   magazineAmmo: 12
-  totalAmmo: 36
+  reloadDelay: 0.3
   currentAmmo: 36
+  currentAmmoInMagazine: 6
   damage: 20
   projectileSpreadAngle: 0
   numOfProjectiles: 1
   recoilImpulse: 0
+  projectileLifeSpan: 1
+  pierceAmount: 0
+  attachRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+  onReloadDelayStarted:
+    m_PersistentCalls:
+      m_Calls: []

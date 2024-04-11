@@ -49,10 +49,6 @@ public class EnemyTypeProjectile : MonoBehaviour
         //if the enemy is far enough away - move towards player  |  when enemy get close enough, it will try to keep its distance as it shoots
         if ((playerTransform.position - enemyTransform.position).magnitude > approachThreashold) enemyTransform.position += getDireciton() * (speed * Time.deltaTime);
         else if ((playerTransform.position - enemyTransform.position).magnitude < approachThreashold - 1) enemyTransform.position += -getDireciton() * (speed * Time.deltaTime); 
-
-
-        //shoot
-        EnemyShootTimer(fireRate);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -80,7 +76,8 @@ public class EnemyTypeProjectile : MonoBehaviour
 
         _flashCoroutine = StartCoroutine(FlashColorForDuration(delta < 0 ? Color.red : Color.green, 0.5f));
 
-        if (gameObject != null) if (health <= 0) Destroy(gameObject);
+        if (gameObject == null) return;
+        if (health <= 0f) Destroy(gameObject);
     }
 
     private IEnumerator FlashColorForDuration(Color color, float duration)

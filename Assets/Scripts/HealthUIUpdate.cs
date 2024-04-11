@@ -34,6 +34,7 @@ public class HealthUIUpdate : MonoBehaviour
         {
             alpha += Time.deltaTime * 3;
             float res = Mathf.Lerp(starting, end, alpha);
+            _slider.value = res;
             yield return null;
         }
     }
