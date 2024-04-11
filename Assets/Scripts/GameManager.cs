@@ -9,6 +9,21 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance => _manager;
 
+    private GameObject _player;
+
+    public GameObject Player
+    {
+        get
+        {
+            if (_player == null)
+            {
+                _player = GameObject.FindGameObjectWithTag("Player");
+            }
+
+            return _player;
+        }
+    }
+
     [HideInInspector]
     public Camera mainCam;
 
