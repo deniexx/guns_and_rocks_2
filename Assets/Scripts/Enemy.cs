@@ -5,25 +5,15 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     //set variables for AI's (player) location & enemy/chaser speed
-    public Transform playerTransform;
-    public float speed = 2f;
+    private Transform playerTransform;
+    private Transform enemyTransform;
+    public float speed = 1f;
 
 
-    //set cubic area for spawning using min and max values
-    private Vector3 spawnMin = new Vector3(-10.91f, 0, 0);
-    private Vector3 spawnMax = new Vector3(10.58f, 16.35f, 0);
-
-
-    [SerializeField] private float enemyHealth = 100;
-
-
-    //funciton to spawn the enemy/chaser randomly within the predefined cubic area
-    public void SetRandomSpawnPosition()
+    private void Start()
     {
-        transform.localPosition = new Vector3(
-            Random.Range(spawnMin.x, spawnMax.x),
-            Random.Range(spawnMin.y, spawnMax.y)
-        );
+        playerTransform = GameManager.Instance.Player.transform;
+        enemyTransform = transform;
     }
 
     //update enemy by moving it towards the AI/client's location
@@ -31,6 +21,15 @@ public class Enemy : MonoBehaviour
     {
         Vector3 direction = (playerTransform.position - transform.position).normalized;
 
-        transform.position += direction * speed * Time.deltaTime;
+        enemyTransform.position += direction * (speed * Time.deltaTime);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        //player - enemy collisions
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<HealthComponent>().ApplyHealthDelta(-10f);
+        }
     }
 }

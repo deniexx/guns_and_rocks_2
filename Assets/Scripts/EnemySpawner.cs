@@ -14,19 +14,25 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //start timer - spawning of enemies
+        StartCoroutine(EnemySpawnTimer(3.5f));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > spawnRate)
-        {
-            spawnEnemy = Time.time + spawnRate;
-            SpawnEnemy();
-        }
+
     }
 
+    //create the timer to spawn enemies
+    private IEnumerator EnemySpawnTimer(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SpawnEnemy();
+        StartCoroutine(EnemySpawnTimer(spawnRate));
+    }
+
+    //spawn enemy into world - off screen
     void SpawnEnemy()
     {
         Vector3 spawnPos = CalcSpawnPos();
@@ -37,6 +43,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    //calculate spawn position using screen and threasholds
     Vector3 CalcSpawnPos()
     {
         float spawnX = Random.Range(-spawnDistance, spawnDistance);
@@ -46,6 +53,7 @@ public class EnemySpawner : MonoBehaviour
         return pos;
     }
 
+    //choose a random position off-screen
     bool IsPosOutsideView(Vector3 pos)
     {
         Vector3 screenPos = camera.WorldToScreenPoint(pos);

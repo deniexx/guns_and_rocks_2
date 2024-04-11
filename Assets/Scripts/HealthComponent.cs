@@ -29,5 +29,6 @@ public class HealthComponent : MonoBehaviour
 
         float actualDelta = _health - oldHealth;
         onHealthChanged?.Invoke(_health, actualDelta);
+        Debug.Log("Max Health:" + _health);
     }
 }

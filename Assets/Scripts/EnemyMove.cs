@@ -18,7 +18,7 @@ public class EnemyMove : MonoBehaviour
         Enemy Enemy = enemyGameObject.GetComponent<Enemy>();
         if (Enemy != null)
         {
-            Enemy.SetRandomSpawnPosition();
+
         }
     }
 
