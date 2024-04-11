@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="amountToCheck">The amount of currency to check if the player has enough</param>
     /// <returns>TRUE if player has enough currency, FALSE if not</returns>
-    bool HasEnoughCurrency(int amountToCheck)
+    public bool HasEnoughCurrency(int amountToCheck)
     {
         return _currency >= amountToCheck;
     }
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
     /// Adds to the currency of the player
     /// </summary>
     /// <param name="amountToAdd">How much currency to add</param>
-    void AddToCurrency(int amountToAdd)
+    public void AddToCurrency(int amountToAdd)
     {
         _currency += amountToAdd;
         onCurrencyChanged?.Invoke(_currency);
@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="amount">Amount to reduce the currency by</param>
     /// <returns>TRUE if transaction was successful, FALSE if transaction has failed (has not enough currency)</returns>
-    bool TakeAwayFromCurrency(int amount)
+    public bool TakeAwayFromCurrency(int amount)
     {
         if (!HasEnoughCurrency(amount))
         {

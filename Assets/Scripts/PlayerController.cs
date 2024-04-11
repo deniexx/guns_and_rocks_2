@@ -70,9 +70,10 @@ public class PlayerController : MonoBehaviour
 
     private void FireStarted(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("Fire Start");
-        currentWeapon.Shoot(GameObject.Find("FirePoint").transform.position);
-
+        if (currentWeapon != null)
+        {
+            currentWeapon.Shoot(GameObject.Find("FirePoint").transform.position);
+        }
     }
 
     private void FireStopped(InputAction.CallbackContext callbackContext)
