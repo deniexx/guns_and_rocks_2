@@ -1,16 +1,32 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public float moveSpeed = 8f;
-
+    /*****************************************/
+    /**************** INPUT *****************/
+    /***************************************/
+    
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _fireAction;
-    private Transform _transform;
 
+    /*****************************************/
+    /*************** MOVEMENT ***************/
+    /***************************************/
+    
+    public float accelerationForce = 5;
+    public float maxSpeed = 10f;
+    
+    [Range(0f, 1f)]
+    public float friction = 0.15f;
+    
+    private Vector2 _velocity = Vector2.zero;
+    private Rigidbody2D _rigidbody2D;
+
+    private bool _impulsing = false;
+    
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
@@ -18,20 +34,55 @@ public class PlayerController : MonoBehaviour
 
         _fireAction = _playerInput.actions["Fire"];
         _fireAction.started += Fire;
-        _transform = transform;
+        
+        _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_moveAction.IsPressed())
         {
-            Vector2 moveInput = _moveAction.ReadValue<Vector2>() * Time.deltaTime * moveSpeed;
-            _transform.position += new Vector3(moveInput.x, moveInput.y, 0);
+            Vector2 forceToAdd = _moveAction.ReadValue<Vector2>() * accelerationForce;
+            _rigidbody2D.velocity += forceToAdd;
+        }
+        
+        // Apply friction
+        Vector2 newVelocity = _rigidbody2D.velocity;
+        float frictionCoefficient = 1 - friction;
+        newVelocity *= frictionCoefficient;
+        
+        // Clamp Speed, only if we are not being impulsed by something
+        if (!_impulsing)
+        {
+            float clampedX = Mathf.Clamp(newVelocity.x, -maxSpeed, maxSpeed);
+            float clampedY = Mathf.Clamp(newVelocity.y, -maxSpeed, maxSpeed);
+            newVelocity = new Vector2(clampedX, clampedY);
+            _rigidbody2D.velocity = newVelocity;
         }
     }
 
     private void Fire(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("Firing!");
+       ApplyImpulseAwayFromMousePos(30);
+    }
+
+    public void ApplyImpulseAwayFromMousePos(float power, float duration = 0.1f)
+    {
+        Vector3 direction = GameplayStatics.GetDirectionFromMouseToLocation(transform.position);
+        ApplyImpulse(new Vector2(direction.x, direction.y) * power, duration);
+    }
+
+    public void ApplyImpulse(Vector2 impulseVelocity, float duration = 0.1f)
+    {
+        _impulsing = true;
+        _rigidbody2D.velocity = impulseVelocity;
+        StartCoroutine(ResetImpulse(duration));
+    }
+
+    private IEnumerator ResetImpulse(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        _rigidbody2D.velocity = Vector2.zero;
+        _impulsing = false;
     }
 }
