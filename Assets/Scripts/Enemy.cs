@@ -9,6 +9,25 @@ public class Enemy : MonoBehaviour
     private Transform enemyTransform;
     public float speed = 1f;
 
+    private HealthComponent _healthComponent;
+    private MaterialPropertyBlock _mpb;
+    private SpriteRenderer _spriteRenderer;
+
+    private Coroutine _flashCoroutine;
+
+    private static readonly int FlashColor = Shader.PropertyToID("_FlashColor");
+    private static readonly int LerpAlpha = Shader.PropertyToID("_LerpAlpha");
+    private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+
+
+    private void Awake()
+    {
+        _healthComponent = GetComponent<HealthComponent>();
+        _healthComponent.onHealthChanged.AddListener(OnHealthChanged);
+
+        _mpb = new MaterialPropertyBlock();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     private void Start()
     {
@@ -34,5 +53,36 @@ public class Enemy : MonoBehaviour
     Vector3 getDireciton()
     {
         return (playerTransform.position - transform.position).normalized;
+    }
+
+    private void OnHealthChanged(float health, float delta)
+    {
+        if (_flashCoroutine != null) StopCoroutine(_flashCoroutine);
+
+        _flashCoroutine = StartCoroutine(FlashColorForDuration(delta < 0 ? Color.red : Color.green, 0.5f));
+
+        if (gameObject != null) if (health <= 0) Destroy(gameObject);
+    }
+
+    private IEnumerator FlashColorForDuration(Color color, float duration)
+    {
+        float alpha = 0;
+        _mpb.SetColor(FlashColor, color);
+        _mpb.SetTexture(MainTex, _spriteRenderer.sprite.texture);
+        while (alpha < 1f)
+        {
+            alpha += Time.deltaTime * (1 / duration * 2);
+            _mpb.SetFloat(LerpAlpha, alpha);
+            _spriteRenderer.SetPropertyBlock(_mpb);
+            yield return null;
+        }
+
+        while (alpha > 0f)
+        {
+            alpha -= Time.deltaTime * (1 / duration * 2);
+            _mpb.SetFloat(LerpAlpha, alpha);
+            _spriteRenderer.SetPropertyBlock(_mpb);
+            yield return null;
+        }
     }
 }

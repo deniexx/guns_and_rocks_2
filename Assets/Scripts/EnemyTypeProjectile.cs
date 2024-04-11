@@ -11,10 +11,18 @@ public class EnemyTypeProjectile : MonoBehaviour
     public float speed = 3.5f;
     public float approachThreashold = 10f;
 
-
-    GameObject healthComponentObject;
     [SerializeField] GameObject enemyBullet;
     [SerializeField] public float fireRate = 3;
+
+    private HealthComponent _healthComponent;
+    private MaterialPropertyBlock _mpb;
+    private SpriteRenderer _spriteRenderer;
+
+    private Coroutine _flashCoroutine;
+
+    private static readonly int FlashColor = Shader.PropertyToID("_FlashColor");
+    private static readonly int LerpAlpha = Shader.PropertyToID("_LerpAlpha");
+    private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
     private void Start()
     {
@@ -24,6 +32,15 @@ public class EnemyTypeProjectile : MonoBehaviour
 
         //shoot first bullet(s) 3 seconds after game starts
         StartCoroutine(EnemyShootTimer(3));
+    }
+
+    private void Awake()
+    {
+        _healthComponent = GetComponent<HealthComponent>();
+        _healthComponent.onHealthChanged.AddListener(OnHealthChanged);
+
+        _mpb = new MaterialPropertyBlock();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     //update enemy by moving it towards the AI/client's location
@@ -57,12 +74,34 @@ public class EnemyTypeProjectile : MonoBehaviour
         StartCoroutine(EnemyShootTimer(fireRate));
     }
 
-    void deathCheck()
+    private void OnHealthChanged(float health, float delta)
     {
-        HealthComponent healthComponent = healthComponentObject.GetComponent<HealthComponent>();
+        if (_flashCoroutine != null) StopCoroutine(_flashCoroutine);
 
-        float currentHealth = healthComponent._health;
+        _flashCoroutine = StartCoroutine(FlashColorForDuration(delta < 0 ? Color.red : Color.green, 0.5f));
 
-        if (gameObject != null) if (currentHealth <= 0) Destroy(gameObject);
+        if (gameObject != null) if (health <= 0) Destroy(gameObject);
+    }
+
+    private IEnumerator FlashColorForDuration(Color color, float duration)
+    {
+        float alpha = 0;
+        _mpb.SetColor(FlashColor, color);
+        _mpb.SetTexture(MainTex, _spriteRenderer.sprite.texture);
+        while (alpha < 1f)
+        {
+            alpha += Time.deltaTime * (1 / duration * 2);
+            _mpb.SetFloat(LerpAlpha, alpha);
+            _spriteRenderer.SetPropertyBlock(_mpb);
+            yield return null;
+        }
+
+        while (alpha > 0f)
+        {
+            alpha -= Time.deltaTime * (1 / duration * 2);
+            _mpb.SetFloat(LerpAlpha, alpha);
+            _spriteRenderer.SetPropertyBlock(_mpb);
+            yield return null;
+        }
     }
 }

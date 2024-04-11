@@ -10,7 +10,7 @@ public class HealthComponent : MonoBehaviour
     [SerializeField] 
     private float invincibilityDuration = 0.1f;
     
-    public float _health;
+    private float _health;
 
     [SerializeField] 
     private bool applyInvincibility = false;

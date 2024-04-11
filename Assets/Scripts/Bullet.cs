@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             --pierceAmount;
-            other.GetComponent<HealthComponent>().ApplyHealthDelta(damage);
+            other.GetComponent<HealthComponent>().ApplyHealthDelta(-damage);
             if (pierceAmount <= 0)
             {
                 Destroy(gameObject);
