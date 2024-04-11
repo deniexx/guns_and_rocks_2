@@ -1,19 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
 public class EnemySpawner : MonoBehaviour
 {
-    //[SerializeField] 
-    //GameObject enemyGameObject;
-    //GameObject enemyGameObjectTank;
-    //GameObject enemyGameObjectProjectile;
-
     [SerializeField] GameObject[] enemyTypes;
-
-
-    [SerializeField] Camera camera;
+    
     [SerializeField] float spawnDistance = 10f;
     [SerializeField] float spawnRate = 10f;
     [SerializeField] float spawnEnemy = 0f;
@@ -58,14 +50,14 @@ public class EnemySpawner : MonoBehaviour
         float spawnX = Random.Range(-spawnDistance, spawnDistance);
         float spawnY = Random.Range(-spawnDistance, spawnDistance);
 
-        Vector3 pos = camera.transform.position + new Vector3(spawnX, spawnY, 0);
+        Vector3 pos = GameManager.Instance.mainCam.transform.position + new Vector3(spawnX, spawnY, 0);
         return pos;
     }
 
     //choose a random position off-screen
     bool IsPosOutsideView(Vector3 pos)
     {
-        Vector3 screenPos = camera.WorldToScreenPoint(pos);
+        Vector3 screenPos = GameManager.Instance.mainCam.WorldToScreenPoint(pos);
         return screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height;
     }
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -12,15 +10,25 @@ public class Weapon : MonoBehaviour
     public int magazineAmmo = 6;
     public int totalAmmo = 32;
     public int currentAmmo = 32;
+    public int currentAmmoInMagazine = 6;
     public int damage = 20;
     public int projectileSpreadAngle = 90;
     public int numOfProjectiles = 5;
     public int recoilImpulse = 0;
+    public float projectileLifeSpan = 1f;
     public int pierceAmount = 0;
+
+    private PlayerController _playerController;
 
     private bool bIsFiring = false;
 
     private float nextTimeOfFire = 0;
+
+    public void Equipped(PlayerController playerController)
+    {
+        _playerController = playerController;
+    }
+    
     public void StartFiring()
     {
         Debug.Log("Weapon firing!");
@@ -42,18 +50,29 @@ public class Weapon : MonoBehaviour
                     Vector3 dirActual = GameplayStatics.RotateVector(leftOfSpread, deltaSpread * i);
 
                     //Debug.DrawLine(transform.position, transform.position + dirActual * 20, Color.black, 5f);
+                    if (currentAmmoInMagazine > 0)
+                    {
+                        GameObject bulletGO = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                        Bullet bullet = bulletGO.GetComponent<Bullet>();
+                        bullet.damage = damage;
+                        bullet.dir = dirActual;
+                        bullet.pierceAmount = pierceAmount;
+                        Destroy(bulletGO, projectileLifeSpan);
+                        nextTimeOfFire = Time.time + 1 / fireRate;
+                        _playerController.ApplyImpulseAwayFromMousePos(recoilImpulse);
+                    }
 
-                    GameObject bulletGO = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-                    Bullet bullet = bulletGO.GetComponent<Bullet>();
-                    bullet.damage = damage;
-                    bullet.dir = dirActual;
-                    bullet.pierceAmount = pierceAmount;
-                    nextTimeOfFire = Time.time + 1 / fireRate;
                 }
-
+                currentAmmoInMagazine--;
             }
-
         }
+    }
+
+    public void Reload()
+    {
+        int ammoNeeded = currentAmmo - currentAmmoInMagazine;
+        currentAmmoInMagazine = magazineAmmo;
+        currentAmmo = currentAmmo - ammoNeeded;
     }
 
     public void EndFiring()
