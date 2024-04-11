@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     /**************** WEAPON *****************/
     /***************************************/
     public Weapon currentWeapon;
-    public GameObject bullet;
 
     /*****************************************/
     /**************** INPUT *****************/
@@ -70,13 +69,17 @@ public class PlayerController : MonoBehaviour
     {
         if (currentWeapon != null)
         {
-            currentWeapon.Shoot(GameObject.Find("FirePoint").transform.position);
+            currentWeapon.StartFiring();
         }
     }
 
     private void FireStopped(InputAction.CallbackContext callbackContext)
     {
         Debug.Log("Fire Stop");
+        if (currentWeapon != null)
+        {
+            currentWeapon.EndFiring();
+        }
     }
 
     /// <summary>
