@@ -17,4 +17,13 @@ public static class GameplayStatics
         
         return new Vector2(direction.x, direction.y);
     }
+
+    public static Vector2 RotateVector(Vector2 v, float angle)
+    {
+        float rad = Mathf.Deg2Rad * angle;
+        float newX = v.x * Mathf.Cos(rad) - v.y * Mathf.Sin(rad);
+        float newY = v.x * Mathf.Sin(rad) + v.y * Mathf.Cos(rad);
+
+        return new Vector2(newX, newY);
+    }
 }
