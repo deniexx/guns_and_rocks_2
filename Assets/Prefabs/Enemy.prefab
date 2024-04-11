@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2.25
+  gemstone: {fileID: 8143894331333304043, guid: 60a347aa66a56a4498d1c4a4bac8ccda, type: 3}
 --- !u!58 &599087297752609541
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1285375590468157853}
   - component: {fileID: 6480612817496852146}
   - component: {fileID: 3809994763668812258}
+  - component: {fileID: 5270193039663495366}
   m_Layer: 0
   m_Name: Gemstone
   m_TagString: Untagged
@@ -135,3 +136,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value: 10
   moveSpeed: 20
+--- !u!50 &5270193039663495366
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8143894331333304043}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

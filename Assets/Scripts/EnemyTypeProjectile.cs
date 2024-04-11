@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyTypeProjectile : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class EnemyTypeProjectile : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     private Coroutine _flashCoroutine;
+
+    [SerializeField]
+    private GameObject gemstone;
 
     private static readonly int FlashColor = Shader.PropertyToID("_FlashColor");
     private static readonly int LerpAlpha = Shader.PropertyToID("_LerpAlpha");
@@ -76,6 +80,15 @@ public class EnemyTypeProjectile : MonoBehaviour
 
         _flashCoroutine = StartCoroutine(FlashColorForDuration(delta < 0 ? Color.red : Color.green, 0.5f));
 
+        int roll = Random.Range(1, (Mathf.CeilToInt(Mathf.Abs(delta)) + 1) / 5);
+        for (int i = 0; i < roll; ++i)
+        {
+            GameObject gemstoneGO = Instantiate(gemstone, transform.position, Quaternion.identity);
+            gemstoneGO.GetComponent<Gemstone>().SetValue(Random.Range(20, 60));
+            float force = Random.Range(5, 20);
+            gemstoneGO.GetComponent<Rigidbody2D>().AddForce(getDireciton() * force);
+        }
+        
         if (gameObject == null) return;
         if (health <= 0f) Destroy(gameObject);
     }
