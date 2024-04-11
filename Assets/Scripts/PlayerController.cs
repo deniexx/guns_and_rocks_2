@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     /*****************************************/
     /**************** WEAPON ****************/
     /***************************************/
+    
     private Weapon _currentWeapon;
 
     [SerializeField]
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     /*****************************************/
     /**************** HEALTH ****************/
     /***************************************/
+    
     private HealthComponent _healthComponent;
     private MaterialPropertyBlock _mpb;
     private SpriteRenderer _spriteRenderer;
@@ -31,7 +33,8 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _fireAction;
-    private InputAction _equipWeapon;
+    private InputAction _equipWeaponAction;
+    private InputAction _reloadAction;
 
     /*****************************************/
     /*************** MOVEMENT ***************/
@@ -59,8 +62,11 @@ public class PlayerController : MonoBehaviour
         _fireAction.started += FireStarted;
         _fireAction.canceled += FireStopped;
 
-        _equipWeapon = _playerInput.actions["EquipWeapon"];
-        _equipWeapon.started += AttemptToEquipWeapon;
+        _equipWeaponAction = _playerInput.actions["EquipWeapon"];
+        _equipWeaponAction.started += AttemptToEquipWeapon;
+
+        _reloadAction = _playerInput.actions["Reload"];
+        _reloadAction.started += ReloadWeapon;
         
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _healthComponent = GetComponent<HealthComponent>();
@@ -105,7 +111,6 @@ public class PlayerController : MonoBehaviour
 
     private void FireStopped(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("Fire Stop");
         if (_currentWeapon != null)
         {
             _currentWeapon.EndFiring();
@@ -122,6 +127,14 @@ public class PlayerController : MonoBehaviour
                 EquipWeapon(collider.gameObject);
                 break;
             }
+        }
+    }
+
+    private void ReloadWeapon(InputAction.CallbackContext callbackContext)
+    {
+        if (_currentWeapon != null)
+        {
+            _currentWeapon.Reload();
         }
     }
 

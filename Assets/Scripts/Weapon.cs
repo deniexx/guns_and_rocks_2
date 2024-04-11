@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class Weapon : MonoBehaviour
     public float fireRate = 1;
 
     public int magazineAmmo = 6;
-    public int totalAmmo = 32;
+    public float reloadDelay = 0.3f;
     public int currentAmmo = 32;
     public int currentAmmoInMagazine = 6;
     public int damage = 20;
@@ -24,6 +26,10 @@ public class Weapon : MonoBehaviour
 
     private float nextTimeOfFire = 0;
 
+    private Coroutine _reloadCoroutine;
+
+    public UnityEvent<float> onReloadDelayStarted;
+
     public void Equipped(PlayerController playerController)
     {
         _playerController = playerController;
@@ -31,7 +37,6 @@ public class Weapon : MonoBehaviour
     
     public void StartFiring()
     {
-        Debug.Log("Weapon firing!");
         bIsFiring = true;
     }
 
@@ -70,14 +75,31 @@ public class Weapon : MonoBehaviour
 
     public void Reload()
     {
-        int ammoNeeded = currentAmmo - currentAmmoInMagazine;
-        currentAmmoInMagazine = magazineAmmo;
-        currentAmmo = currentAmmo - ammoNeeded;
+        if (_reloadCoroutine == null && currentAmmoInMagazine != magazineAmmo && currentAmmo != 0)
+        {
+            _reloadCoroutine = StartCoroutine(ReloadAfterDelay(reloadDelay));
+            onReloadDelayStarted?.Invoke(reloadDelay);
+        }
+    }
+
+    private IEnumerator ReloadAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        int ammoNeeded = magazineAmmo - currentAmmoInMagazine;
+        if (currentAmmo > ammoNeeded)
+        {
+            currentAmmoInMagazine = magazineAmmo;
+            currentAmmo -= ammoNeeded;
+        }
+        else
+        {
+            currentAmmoInMagazine = currentAmmo;
+            currentAmmo = 0;
+        }
     }
 
     public void EndFiring()
     {
-        Debug.Log("Weapon stopped firing!");
         bIsFiring = false;
     }
 
