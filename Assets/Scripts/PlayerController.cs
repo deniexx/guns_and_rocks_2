@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext callbackContext)
     {
-       ApplyImpulseAwayFromMousePos(30);
+        Debug.Log("Fire");
     }
 
     public void ApplyImpulseAwayFromMousePos(float power, float duration = 0.1f)
