@@ -9,11 +9,12 @@ public class Bullet : MonoBehaviour
     public float speed;
     private Weapon currentWeapon;
     public int damage = 0;
+    public int pierceAmount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Destroy(gameObject, 3);
     }
 
     // Update is called once per frame
@@ -26,12 +27,12 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            if (currentWeapon != null)
-            {
-                damage = currentWeapon.damage;
-            }
-
+            --pierceAmount;
             other.GetComponent<HealthComponent>().ApplyHealthDelta(damage);
+            if (pierceAmount <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

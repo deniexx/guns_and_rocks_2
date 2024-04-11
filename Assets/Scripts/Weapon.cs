@@ -16,8 +16,9 @@ public class Weapon : MonoBehaviour
     public int projectileSpreadAngle = 90;
     public int numOfProjectiles = 5;
     public int recoilImpulse = 0;
+    public int pierceAmount = 0;
 
-    private bool bIsFiring = true;
+    private bool bIsFiring = false;
 
     private float nextTimeOfFire = 0;
     public void StartFiring()
@@ -46,6 +47,7 @@ public class Weapon : MonoBehaviour
                     Bullet bullet = bulletGO.GetComponent<Bullet>();
                     bullet.damage = damage;
                     bullet.dir = dirActual;
+                    bullet.pierceAmount = pierceAmount;
                     nextTimeOfFire = Time.time + 1 / fireRate;
                 }
 

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GemstoneCollector
   - Enemy
+  - Weapon
   layers:
   - Default
   - TransparentFX

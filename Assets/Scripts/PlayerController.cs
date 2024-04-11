@@ -7,7 +7,13 @@ public class PlayerController : MonoBehaviour
     /*****************************************/
     /**************** WEAPON *****************/
     /***************************************/
-    public Weapon currentWeapon;
+    private Weapon _currentWeapon;
+
+    [SerializeField]
+    private float pickupRadius = 4f;
+    
+    [SerializeField]
+    private Transform weaponAttachPoint;
 
     /*****************************************/
     /**************** INPUT *****************/
@@ -16,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _fireAction;
+    private InputAction _equipWeapon;
 
     /*****************************************/
     /*************** MOVEMENT ***************/
@@ -40,6 +47,9 @@ public class PlayerController : MonoBehaviour
         _fireAction = _playerInput.actions["Fire"];
         _fireAction.started += FireStarted;
         _fireAction.canceled += FireStopped;
+
+        _equipWeapon = _playerInput.actions["EquipWeapon"];
+        _equipWeapon.started += AttemptToEquipWeapon;
         
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
@@ -63,23 +73,66 @@ public class PlayerController : MonoBehaviour
             newVelocity = Vector2.ClampMagnitude(newVelocity, maxSpeed);
             _rigidbody2D.velocity = newVelocity;
         }
+        
+        // Rotate player towards mouse
+        Vector3 playerToMouse = -GameplayStatics.GetDirectionFromMouseToLocation(transform.position);
+        float angle = Mathf.Atan2(playerToMouse.y, playerToMouse.x);
+        transform.rotation = Quaternion.AngleAxis((angle * Mathf.Rad2Deg) + 90, Vector3.forward);
     }
 
     private void FireStarted(InputAction.CallbackContext callbackContext)
     {
-        if (currentWeapon != null)
+        if (_currentWeapon != null)
         {
-            currentWeapon.StartFiring();
+            _currentWeapon.StartFiring();
         }
     }
 
     private void FireStopped(InputAction.CallbackContext callbackContext)
     {
         Debug.Log("Fire Stop");
-        if (currentWeapon != null)
+        if (_currentWeapon != null)
         {
-            currentWeapon.EndFiring();
+            _currentWeapon.EndFiring();
         }
+    }
+
+    private void AttemptToEquipWeapon(InputAction.CallbackContext callbackContext)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, pickupRadius);
+        foreach (var collider in colliders)
+        {
+            if (collider != null && collider.CompareTag("Weapon"))
+            {
+                EquipWeapon(collider.gameObject);
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Equips a new weapon
+    /// </summary>
+    /// <param name="weapon">The weapon to equip</param>
+    void EquipWeapon(GameObject weapon)
+    {
+        Weapon weaponComp = weapon.GetComponent<Weapon>();
+        if (weaponComp == null)
+        {
+            return;
+        }
+        
+        if (_currentWeapon)
+        {
+            _currentWeapon.EndFiring();
+            Destroy(_currentWeapon.gameObject);
+        }
+        
+        BoxCollider2D boxCollider2D = weapon.GetComponent<BoxCollider2D>();
+        Destroy(boxCollider2D);
+        weapon.transform.parent = weaponAttachPoint;
+        weapon.transform.localPosition = new Vector3(0f, 0f);
+        _currentWeapon = weaponComp;
     }
 
     /// <summary>
