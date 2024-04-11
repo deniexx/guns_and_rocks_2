@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(AudioSource))]
 public class Weapon : MonoBehaviour
 {
     public GameObject bulletPrefab;
@@ -20,6 +21,8 @@ public class Weapon : MonoBehaviour
     public int recoilImpulse = 0;
     public float projectileLifeSpan = 1f;
     public int pierceAmount = 0;
+
+    public AudioSource audioSource;
 
     public Quaternion attachRotation;
 
@@ -74,7 +77,8 @@ public class Weapon : MonoBehaviour
                             _playerController.ApplyImpulseAwayFromMousePos(recoilImpulse);
                         }
                     }
-                    
+
+                    audioSource.Play();
                     currentAmmoInMagazine--;
                     onAmmoUpdated?.Invoke(currentAmmoInMagazine, currentAmmo);
                 }

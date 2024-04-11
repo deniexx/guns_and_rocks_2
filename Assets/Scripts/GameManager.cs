@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(AudioSource))]
 public class GameManager : MonoBehaviour
 {
     private static GameManager _manager;
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public Camera mainCam;
 
+    public AudioSource gemstoneCollectSound;
+
     private void Awake()
     {
         if (!_manager)
@@ -86,7 +89,8 @@ public class GameManager : MonoBehaviour
     public void AddToCurrency(int amountToAdd)
     {
         AddToXP(amountToAdd);
-        
+
+        gemstoneCollectSound.Play();
         _currency += amountToAdd * UpgradesStatic.gemstoneIncrease;
         onCurrencyChanged?.Invoke(_currency);
     }
