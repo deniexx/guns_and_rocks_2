@@ -47,6 +47,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (IsPosOutsideView(spawnPos))
         {
+            spawnPos.z = 0f;
             Instantiate(enemyType, spawnPos, Quaternion.identity);
         }
     }
