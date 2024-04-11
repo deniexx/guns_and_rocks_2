@@ -15,7 +15,7 @@ public class HealthComponent : MonoBehaviour
     private float _health;
 
     [SerializeField] 
-    private bool applyInvincibiltiy = false;
+    private bool applyInvincibility = false;
 
     public float InvincibilityDuration => invincibilityDuration;
 
@@ -42,7 +42,7 @@ public class HealthComponent : MonoBehaviour
 
         float actualDelta = _health - oldHealth;
         onHealthChanged?.Invoke(_health, actualDelta);
-        if (applyInvincibiltiy)
+        if (applyInvincibility)
         {
             StartCoroutine(ApplyInvincibilityForDuration(InvincibilityDuration));
         }
