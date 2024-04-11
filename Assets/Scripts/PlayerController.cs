@@ -5,9 +5,15 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     /*****************************************/
+    /**************** WEAPON *****************/
+    /***************************************/
+    public Weapon currentWeapon;
+    public GameObject bullet;
+
+    /*****************************************/
     /**************** INPUT *****************/
     /***************************************/
-    
+
     private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _fireAction;
@@ -65,6 +71,8 @@ public class PlayerController : MonoBehaviour
     private void FireStarted(InputAction.CallbackContext callbackContext)
     {
         Debug.Log("Fire Start");
+        currentWeapon.Shoot(GameObject.Find("FirePoint").transform.position);
+
     }
 
     private void FireStopped(InputAction.CallbackContext callbackContext)
