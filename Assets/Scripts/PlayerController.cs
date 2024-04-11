@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     /*****************************************/
-    /**************** WEAPON *****************/
+    /**************** WEAPON ****************/
     /***************************************/
     private Weapon _currentWeapon;
 
@@ -14,6 +14,15 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField]
     private Transform weaponAttachPoint;
+    
+    /*****************************************/
+    /**************** HEALTH ****************/
+    /***************************************/
+    private HealthComponent _healthComponent;
+    private MaterialPropertyBlock _mpb;
+    private SpriteRenderer _spriteRenderer;
+
+    private Coroutine _flashCoroutine;
 
     /*****************************************/
     /**************** INPUT *****************/
@@ -34,11 +43,13 @@ public class PlayerController : MonoBehaviour
     [Range(0f, 1f)]
     public float friction = 0.15f;
     
-    private Vector2 _velocity = Vector2.zero;
     private Rigidbody2D _rigidbody2D;
 
     private bool _impulsing = false;
-    
+    private static readonly int FlashColor = Shader.PropertyToID("_FlashColor");
+    private static readonly int LerpAlpha = Shader.PropertyToID("_LerpAlpha");
+    private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
@@ -52,6 +63,10 @@ public class PlayerController : MonoBehaviour
         _equipWeapon.started += AttemptToEquipWeapon;
         
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _healthComponent = GetComponent<HealthComponent>();
+        _healthComponent.onHealthChanged.AddListener(OnHealthChanged);
+        _mpb = new MaterialPropertyBlock();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -110,6 +125,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnHealthChanged(float health, float delta)
+    {
+        if (_flashCoroutine != null)
+        {
+            StopCoroutine(_flashCoroutine);
+        }
+
+        _flashCoroutine = StartCoroutine(FlashColorForDuration(delta < 0 ? Color.red : Color.green, 0.5f));
+    }
+
     /// <summary>
     /// Equips a new weapon
     /// </summary>
@@ -132,6 +157,7 @@ public class PlayerController : MonoBehaviour
         Destroy(boxCollider2D);
         weapon.transform.parent = weaponAttachPoint;
         weapon.transform.localPosition = new Vector3(0f, 0f);
+        weaponComp.Equipped(this);
         _currentWeapon = weaponComp;
     }
 
@@ -163,5 +189,27 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration);
         _rigidbody2D.velocity = Vector2.zero;
         _impulsing = false;
+    }
+
+    private IEnumerator FlashColorForDuration(Color color, float duration)
+    {
+        float alpha = 0;
+        _mpb.SetColor(FlashColor, color);
+        _mpb.SetTexture(MainTex, _spriteRenderer.sprite.texture);
+        while (alpha < 1f)
+        {
+            alpha += Time.deltaTime * (1 / duration * 2);
+            _mpb.SetFloat(LerpAlpha, alpha);
+            _spriteRenderer.SetPropertyBlock(_mpb);
+            yield return null;
+        }
+        
+        while (alpha > 0f)
+        {
+            alpha -= Time.deltaTime * (1 / duration * 2);
+            _mpb.SetFloat(LerpAlpha, alpha);
+            _spriteRenderer.SetPropertyBlock(_mpb);
+            yield return null;
+        }
     }
 }
