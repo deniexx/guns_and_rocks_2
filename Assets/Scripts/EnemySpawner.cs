@@ -2,9 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject enemyGameObject;
+    //[SerializeField] 
+    //GameObject enemyGameObject;
+    //GameObject enemyGameObjectTank;
+    //GameObject enemyGameObjectProjectile;
+
+    [SerializeField] GameObject[] enemyTypes;
+
+
     [SerializeField] Camera camera;
     [SerializeField] float spawnDistance = 10f;
     [SerializeField] float spawnRate = 10f;
@@ -15,7 +23,7 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         //start timer - spawning of enemies
-        StartCoroutine(EnemySpawnTimer(3.5f));
+        StartCoroutine(EnemySpawnTimer(2.5f, RollEnemyType()));
     }
 
     // Update is called once per frame
@@ -25,21 +33,21 @@ public class EnemySpawner : MonoBehaviour
     }
 
     //create the timer to spawn enemies
-    private IEnumerator EnemySpawnTimer(float delay)
+    private IEnumerator EnemySpawnTimer(float delay, GameObject enemyType)
     {
         yield return new WaitForSeconds(delay);
-        SpawnEnemy();
-        StartCoroutine(EnemySpawnTimer(spawnRate));
+        SpawnEnemy(enemyType);
+        StartCoroutine(EnemySpawnTimer(spawnRate, RollEnemyType()));
     }
 
     //spawn enemy into world - off screen
-    void SpawnEnemy()
+    void SpawnEnemy(GameObject enemyType)
     {
         Vector3 spawnPos = CalcSpawnPos();
 
         if (IsPosOutsideView(spawnPos))
         {
-            Instantiate(enemyGameObject, spawnPos, Quaternion.identity);
+            Instantiate(enemyType, spawnPos, Quaternion.identity);
         }
     }
 
@@ -58,5 +66,12 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector3 screenPos = camera.WorldToScreenPoint(pos);
         return screenPos.x < 0 || screenPos.x > Screen.width || screenPos.y < 0 || screenPos.y > Screen.height;
+    }
+
+    GameObject RollEnemyType()
+    {
+        int roll = Random.Range(0, 3);
+
+        return enemyTypes[roll];
     }
 }
