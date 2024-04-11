@@ -105,6 +105,7 @@ MonoBehaviour:
   approachThreashold: 9.28
   enemyBullet: {fileID: 1034020604734087635, guid: a631e6d26523ca546918d742544e74c9, type: 3}
   fireRate: 3
+  gemstone: {fileID: 8143894331333304043, guid: 60a347aa66a56a4498d1c4a4bac8ccda, type: 3}
 --- !u!114 &2348831050926956672
 MonoBehaviour:
   m_ObjectHideFlags: 0

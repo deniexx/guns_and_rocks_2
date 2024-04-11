@@ -48,7 +48,11 @@ MonoBehaviour:
   - {fileID: 8485086473239032110, guid: d1bda697232ed6641a7d946876479da3, type: 3}
   - {fileID: 8485086473239032110, guid: 1a2c0a0d36de66b47b08dec781f1d9b2, type: 3}
   - {fileID: 2372162169657769368, guid: f39436e1a060a114ba3b67c0cb275e95, type: 3}
-  camera: {fileID: 0}
+  - {fileID: 8485086473239032110, guid: d1bda697232ed6641a7d946876479da3, type: 3}
+  - {fileID: 8485086473239032110, guid: d1bda697232ed6641a7d946876479da3, type: 3}
+  - {fileID: 8485086473239032110, guid: d1bda697232ed6641a7d946876479da3, type: 3}
+  - {fileID: 8485086473239032110, guid: d1bda697232ed6641a7d946876479da3, type: 3}
+  - {fileID: 2372162169657769368, guid: f39436e1a060a114ba3b67c0cb275e95, type: 3}
   spawnDistance: 10
   spawnRate: 0.8
   spawnEnemy: 1

@@ -17,13 +17,7 @@ public class EnemySpawner : MonoBehaviour
         //start timer - spawning of enemies
         StartCoroutine(EnemySpawnTimer(2.5f, RollEnemyType()));
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    
     //create the timer to spawn enemies
     private IEnumerator EnemySpawnTimer(float delay, GameObject enemyType)
     {
@@ -63,7 +57,7 @@ public class EnemySpawner : MonoBehaviour
 
     GameObject RollEnemyType()
     {
-        int roll = Random.Range(0, 3);
+        int roll = Random.Range(0, enemyTypes.Length);
 
         return enemyTypes[roll];
     }
