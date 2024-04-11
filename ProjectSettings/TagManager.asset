@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - GemstoneCollector
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CameraBlocker
   - Water
   - UI
   - 
