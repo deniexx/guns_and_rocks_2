@@ -23,7 +23,7 @@ public class Gemstone : MonoBehaviour
     public void SetValue(int newValue)
     {
         value = Mathf.Max(newValue, 0);
-        float scale = (float)value / 30;
+        float scale = (float)value / 90;
         transform.localScale = new Vector3(scale, scale, scale);
     }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5486915557292135489}
   - component: {fileID: -729008218236858017}
   m_Layer: 0
-  m_Name: Shotgun
+  m_Name: SMG
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.65, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.265, y: 0.265, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8a58bed0b4128bf46985f293ecfd3544, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,7 +122,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.6, y: 1.6}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,19 +144,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 4577362744288396442, guid: 35716342d7f7c624993b487f8930187a, type: 3}
-  fireRate: 1
-  name: Shotgun
-  magazineAmmo: 2
+  fireRate: 30
+  name: SMG
+  magazineAmmo: 24
   reloadDelay: 0.3
-  currentAmmo: 16
-  currentAmmoInMagazine: 2
-  damage: 200
-  projectileSpreadAngle: 90
-  numOfProjectiles: 8
-  recoilImpulse: 50
+  currentAmmo: 96
+  currentAmmoInMagazine: 24
+  damage: 20
+  projectileSpreadAngle: 0
+  numOfProjectiles: 1
+  recoilImpulse: 0
   projectileLifeSpan: 1
-  pierceAmount: 10
-  attachRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+  pierceAmount: 0
+  attachRotation: {x: 0, y: 0, z: 0, w: 1}
   onReloadDelayStarted:
     m_PersistentCalls:
       m_Calls: []

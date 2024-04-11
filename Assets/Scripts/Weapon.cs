@@ -8,6 +8,8 @@ public class Weapon : MonoBehaviour
 
     public float fireRate = 1;
 
+    public string name = "";
+
     public int magazineAmmo = 6;
     public float reloadDelay = 0.3f;
     public int currentAmmo = 32;
