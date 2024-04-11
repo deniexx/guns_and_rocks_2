@@ -30,7 +30,7 @@ public class EnemyBullet : MonoBehaviour
     void FixedUpdate()
     {
         //move bullet towards player
-        transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * (speed * Time.deltaTime);
     }
 
     //apply any damage to player
@@ -40,7 +40,7 @@ public class EnemyBullet : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //apply damage to player
-            other.GetComponent<HealthComponent>().ApplyHealthDelta(damage);
+            other.GetComponent<HealthComponent>().ApplyHealthDelta(-damage);
         }
     }
 
