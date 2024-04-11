@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -16,11 +14,20 @@ public class Weapon : MonoBehaviour
     public int projectileSpreadAngle = 90;
     public int numOfProjectiles = 5;
     public int recoilImpulse = 0;
+    public float projectileLifeSpan = 1f;
     public int pierceAmount = 0;
+
+    private PlayerController _playerController;
 
     private bool bIsFiring = false;
 
     private float nextTimeOfFire = 0;
+
+    public void Equipped(PlayerController playerController)
+    {
+        _playerController = playerController;
+    }
+    
     public void StartFiring()
     {
         Debug.Log("Weapon firing!");
@@ -48,11 +55,11 @@ public class Weapon : MonoBehaviour
                     bullet.damage = damage;
                     bullet.dir = dirActual;
                     bullet.pierceAmount = pierceAmount;
+                    Destroy(bulletGO, projectileLifeSpan);
                     nextTimeOfFire = Time.time + 1 / fireRate;
+                    _playerController.ApplyImpulseAwayFromMousePos(recoilImpulse);
                 }
-
             }
-
         }
     }
 

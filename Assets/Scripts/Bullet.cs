@@ -10,13 +10,7 @@ public class Bullet : MonoBehaviour
     private Weapon currentWeapon;
     public int damage = 0;
     public int pierceAmount = 0;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Destroy(gameObject, 3);
-    }
-
+    
     // Update is called once per frame
     void FixedUpdate()
     {

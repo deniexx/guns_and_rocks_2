@@ -157,6 +157,7 @@ public class PlayerController : MonoBehaviour
         Destroy(boxCollider2D);
         weapon.transform.parent = weaponAttachPoint;
         weapon.transform.localPosition = new Vector3(0f, 0f);
+        weaponComp.Equipped(this);
         _currentWeapon = weaponComp;
     }
 
