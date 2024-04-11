@@ -51,4 +51,4 @@ MonoBehaviour:
   camera: {fileID: 0}
   spawnDistance: 10
   spawnRate: 0.8
-  spawnEnemy: 0
+  spawnEnemy: 1
