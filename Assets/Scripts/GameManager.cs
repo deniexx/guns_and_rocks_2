@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     private GameObject _player;
 
+    private Shop _shop;
+
     public GameObject Player
     {
         get
@@ -22,9 +24,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Shop Shop
+    {
+        get
+        {
+            if (_shop == null)
+            {
+                _shop = GameObject.FindObjectOfType<Shop>();
+            }
+
+            return _shop;
+        }
+    }
+
+    private int _experience;
+
+    private int _experienceForNextLevel = 1327;
+
     private int _currency;
 
     public UnityEvent<int> onCurrencyChanged;
+
+    public UnityEvent onLevelUp;
     
     public int Currency => _currency;
 
@@ -64,8 +85,26 @@ public class GameManager : MonoBehaviour
     /// <param name="amountToAdd">How much currency to add</param>
     public void AddToCurrency(int amountToAdd)
     {
-        _currency += amountToAdd;
+        AddToXP(amountToAdd);
+        
+        _currency += amountToAdd * UpgradesStatic.gemstoneIncrease;
         onCurrencyChanged?.Invoke(_currency);
+    }
+
+    public void AddToXP(int amountToAdd)
+    {
+        _experience += amountToAdd;
+
+        if (_experience > _experienceForNextLevel)
+        {
+            _experience = 0;
+            _experienceForNextLevel *= 3;
+            UpgradesStatic.gemstoneIncrease++;
+            UpgradesStatic.moveSpeedMult += 0.15f;
+            UpgradesStatic.damageIncrease += 20;
+            UpgradesStatic.monsterHealthMult += 0.15f;
+            onLevelUp?.Invoke();
+        }
     }
 
     /// <summary>

@@ -9,10 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenuScreen.unity
     guid: 47e16fa69864d8448a11fcc676031664
   - enabled: 1
-    path: Assets/Scenes/Controls Screen.unity
-    guid: 1da4bcf89134c28499376b6686fde5f1
-  - enabled: 1
-    path: Assets/Scenes/SampleScene 1_Harry.unity
-    guid: 5bb01e9d20bb8ee4f95b55a73bb3103b
+    path: Assets/Scenes/SampleScene 1_Denis.unity
+    guid: 08d84eacc7a261b4aa307d6d1ce2e498
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 8059da116648dcd40a357f798e46afa5, type: 2}

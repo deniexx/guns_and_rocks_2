@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.position += dir * speed * Time.deltaTime;
+        transform.position += dir * (speed * Time.deltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             --pierceAmount;
-            other.GetComponent<HealthComponent>().ApplyHealthDelta(-damage);
+            other.GetComponent<HealthComponent>().ApplyHealthDelta(-(damage + UpgradesStatic.damageIncrease));
             if (pierceAmount <= 0)
             {
                 Destroy(gameObject);

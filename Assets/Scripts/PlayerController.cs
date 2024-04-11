@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private InputAction _fireAction;
     private InputAction _equipWeaponAction;
     private InputAction _reloadAction;
+    private InputAction _purchaseAction;
 
     /*****************************************/
     /*************** MOVEMENT ***************/
@@ -70,6 +71,9 @@ public class PlayerController : MonoBehaviour
 
         _reloadAction = _playerInput.actions["Reload"];
         _reloadAction.started += ReloadWeapon;
+
+        _purchaseAction = _playerInput.actions["BuyWeapon"];
+        _purchaseAction.started += _ => GameManager.Instance.Shop.BuyWeapon();
         
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _healthComponent = GetComponent<HealthComponent>();
@@ -82,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_moveAction.IsPressed())
         {
-            Vector2 forceToAdd = _moveAction.ReadValue<Vector2>() * accelerationForce;
+            Vector2 forceToAdd = _moveAction.ReadValue<Vector2>() * (accelerationForce * UpgradesStatic.moveSpeedMult);
             _rigidbody2D.velocity += forceToAdd;
         }
         
@@ -94,7 +98,7 @@ public class PlayerController : MonoBehaviour
         // Clamp Speed, only if we are not being impulsed by something
         if (!_impulsing)
         {
-            newVelocity = Vector2.ClampMagnitude(newVelocity, maxSpeed);
+            newVelocity = Vector2.ClampMagnitude(newVelocity, maxSpeed * UpgradesStatic.moveSpeedMult);
             _rigidbody2D.velocity = newVelocity;
         }
         
@@ -149,6 +153,16 @@ public class PlayerController : MonoBehaviour
         }
 
         _flashCoroutine = StartCoroutine(FlashColorForDuration(delta < 0 ? Color.red : Color.green, 0.5f));
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        FindObjectOfType<DeathScreen>().EnableScreen();
+        _playerInput.DeactivateInput();
     }
 
     /// <summary>
