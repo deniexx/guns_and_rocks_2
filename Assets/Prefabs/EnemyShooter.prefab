@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1844685506682021288}
   m_Layer: 0
   m_Name: EnemyShooter
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,8 +103,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3.5
   approachThreashold: 9.28
-  orbitThreashold: 12
-  bulletVelocity: 2
   enemyBullet: {fileID: 1034020604734087635, guid: a631e6d26523ca546918d742544e74c9, type: 3}
   fireRate: 3
 --- !u!114 &2348831050926956672
@@ -119,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f902782cd5fffe54f9616841c4c4c190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0.7
+  maxHealth: 70
   invincibilityDuration: 0.1
   applyInvincibility: 0
   onHealthChanged:

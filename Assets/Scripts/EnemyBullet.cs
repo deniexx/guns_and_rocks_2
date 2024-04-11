@@ -11,7 +11,8 @@ public class EnemyBullet : MonoBehaviour
     public int pierceAmount = 0;
     public Vector3 direction;
 
-    private Transform playerTransform; //use this to send bullet towards player
+    //use this to send bullet towards player
+    private Transform playerTransform; 
     [SerializeField] GameObject player;
 
 
@@ -32,6 +33,7 @@ public class EnemyBullet : MonoBehaviour
         transform.position += direction * speed * Time.deltaTime;
     }
 
+    //apply any damage to player
     void OnTriggerEnter2D(Collider2D other)
     {
         //collision checks
@@ -42,6 +44,7 @@ public class EnemyBullet : MonoBehaviour
         }
     }
 
+    //get the direction of the player
     Vector3 getDireciton()
     {
         return (playerTransform.position - transform.position).normalized;
